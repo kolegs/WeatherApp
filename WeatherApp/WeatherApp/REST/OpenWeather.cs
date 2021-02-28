@@ -11,7 +11,7 @@ namespace WeatherApp.REST
 {
     public class OpenWeather
     {
-        public static string API_KEY = "d9f76563ef774b1be4e2622bcad98d58";
+        public static string API_KEY = "YOUR_KEY_HERE";
         public static async Task<OpenWeatherOneCall> GetWeather(double latitude, double longitude, Units units)
         {
             var culture = System.Globalization.CultureInfo.CurrentUICulture;

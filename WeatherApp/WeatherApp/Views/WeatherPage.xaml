@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherApp.Views.WeatherPage"
+             xmlns:vm="clr-namespace:WeatherApp.ViewModels"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:xamEffects="clr-namespace:XamEffects;assembly=XamEffects"
+             xmlns:converters="clr-namespace:WeatherApp.Converters;assembly=WeatherApp"
+             xmlns:resources="clr-namespace:WeatherApp.Resources;assembly=WeatherApp"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False"
+             Appearing="WeatherPage_OnAppearing">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="1,0"
+                             EndPoint="0,1">
+            <GradientStop Color="#03091E"
+                          Offset="0.1"/>
+            <GradientStop Color="#453947"
+                          Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:BoolToOpacityInverseConverter x:Key="BoolToOpacityInverseConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout
+            Padding="20, 0"
+            Spacing="10">
+            <Label 
+                Padding="0,20, 0, 0"
+                d:Text="10 Stycznia 2021"
+                Text="{Binding DateText}"
+                FontSize="Title"
+                VerticalOptions="Start" 
+                TextColor="White"
+                HorizontalOptions="CenterAndExpand" />
+            <Entry
+                BackgroundColor="White"
+                HorizontalTextAlignment="Center"
+                Keyboard="Text"
+                IsSpellCheckEnabled="False"
+                IsTextPredictionEnabled="False"
+                x:Name="SearchEntry"
+                Text="{Binding SearchText}"
+                ReturnCommand="{Binding SearchCommand}"
+                ReturnCommandParameter="{Binding Source={x:Reference SearchEntry}, Path=Text}"
+                d:Placeholder="Toruń. PL"
+                Placeholder="{Binding CurrentLocation}"/>
+            <Label
+                TextColor="White"
+                Text="{Binding OlderDataText}"
+                IsVisible="{Binding OlderDataVisible}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"/>
+            <StackLayout
+                Orientation="Horizontal"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand">
+                <ImageButton
+                    Source="icon_current_location.png"
+                    HeightRequest="40"
+                    BackgroundColor="Transparent"
+                    Command="{Binding CurrentLocationCommand}"/>
+                <CollectionView 
+                    HeightRequest="40"
+                    ItemsSource="{Binding FavoritePlaces}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"
+                                           ItemSpacing="20" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                BackgroundColor="#505050"
+                                d:Text="{Binding .}"
+                                Text="{Binding PositionText}"
+                                xamEffects:Commands.Tap="{Binding ClickCommand}"
+                                xamEffects:Commands.LongTap="{Binding LongClickCommand}"
+                                TextColor="White">
+                            </Button>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <ActivityIndicator
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Color="Orange"
+                IsVisible="{Binding IsLoading}"
+                IsRunning="{Binding IsLoading}"/>
+            <StackLayout
+                Opacity="{Binding Path=IsLoading, Converter={StaticResource BoolToOpacityInverseConverter}}">
+                <StackLayout
+                Orientation="Horizontal">
+                    <Image
+                    d:Source="weather_fc_cloudy.png"
+                    Source="{Binding WeatherIcon}"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Start"
+                    HeightRequest="150"
+                    WidthRequest="150"/>
+                    <StackLayout
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Vertical"
+                    Spacing="0">
+                        <Label
+                        d:Text="1.5°C"
+                        Text="{Binding WeatherTemperature}"
+                        TextColor="White"
+                        FontSize="60"
+                        HorizontalTextAlignment="End"/>
+                        <Label
+                        d:Text="1013hPa"
+                        Text="{Binding WeatherPressure}"
+                        TextColor="White"
+                        FontSize="Title"
+                        HorizontalTextAlignment="End"/>
+                        <Label
+                        d:Text="0mm"
+                        Text="{Binding WeatherRain}"
+                        TextColor="White"
+                        FontSize="Title"
+                        HorizontalTextAlignment="End"/>
+                        <Label
+                        d:Text="0mm"
+                        Text="{Binding WeatherWind}"
+                        TextColor="White"
+                        FontSize="Title"
+                        HorizontalTextAlignment="End"/>
+                        <Label
+                        d:Text="Pochmurnie"
+                        Text="{Binding WeatherDescription}"
+                        LineBreakMode="WordWrap"
+                        TextColor="White"
+                        FontSize="Title"
+                        HorizontalTextAlignment="End"/>
+                        <Label
+                        d:Text="Wschód 6:30"
+                        Text="{Binding WeatherSunrise}"
+                        TextColor="White"
+                        FontSize="Title"
+                        HorizontalTextAlignment="End"/>
+                        <Label
+                        d:Text="Zachód 18:30"
+                        Text="{Binding WeatherSunset}"
+                        TextColor="White"
+                        FontSize="Title"
+                        HorizontalTextAlignment="End"/>
+                    </StackLayout>
+                </StackLayout>
+                <Label
+                Padding="0, 30, 0, 10"
+                TextColor="White"
+                FontSize="Title"
+                HorizontalTextAlignment="Center"
+                Text="{x:Static resources:AppTranslations.HourlyForecast}"/>
+                <Frame
+                BorderColor="#707070"
+                CornerRadius="0"
+                Padding="10">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="1,0"
+                                         EndPoint="0,1">
+                            <GradientStop Color="#03091E"
+                                      Offset="0.1"/>
+                            <GradientStop Color="#453947"
+                                      Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                    <CollectionView
+                        HeightRequest="110"
+                        ItemsSource="{Binding HoursForecastItems}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal"
+                                               ItemSpacing="20" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout
+                                    Orientation="Vertical">
+                                    <Label
+                                        d:Text="15:00"
+                                        Text="{Binding Time}"
+                                        TextColor="White"
+                                        FontSize="Medium"
+                                        HorizontalTextAlignment="Center"/>
+                                    <Image
+                                        d:Source="weather_fc_fog.png"
+                                        Source="{Binding IconSource}"
+                                        WidthRequest="40"
+                                        HeightRequest="40"/>
+                                    <Label
+                                        d:Text="{Binding .}"
+                                        Text="{Binding Temperature}"
+                                        TextColor="White"
+                                        FontSize="Medium"
+                                        HorizontalTextAlignment="Center"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+                <Label
+                Padding="0, 30, 0, 10"
+                TextColor="White"
+                FontSize="Title"
+                HorizontalTextAlignment="Center"
+                Text="{x:Static resources:AppTranslations.DailyForecast}"/>
+                <Frame
+                BorderColor="#707070"
+                CornerRadius="0"
+                Padding="10"
+                HeightRequest="300"
+                Margin="0, 0, 0, 30">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="1,0"
+                                         EndPoint="0,1">
+                            <GradientStop Color="#03091E"
+                                      Offset="0.1"/>
+                            <GradientStop Color="#453947"
+                                      Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                    <ListView                           
+                        SelectionMode="None"
+                        ItemsSource="{Binding DaysForecastItems}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid
+                                    HorizontalOptions="FillAndExpand"
+                                    ColumnDefinitions="1*,1*,1*"
+                                    RowDefinitions="Auto">
+                                        <StackLayout
+                                        Orientation="Horizontal"
+                                        Grid.Column="0">
+                                            <Label
+                                            d:Text="Nie &#10;10 Sty"
+                                            Text="{Binding Time}"
+                                            TextColor="White"
+                                            FontSize="Medium"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"/>
+                                            <Image
+                                            d:Source="weather_fc_fog.png"
+                                            Source="{Binding IconSource}"
+                                            WidthRequest="30"
+                                            HeightRequest="30"/>
+                                        </StackLayout>
+                                        <FlexLayout
+                                        Direction="Row"
+                                        Grid.Column="1"
+                                        JustifyContent="Center">
+                                            <Label
+                                            d:Text="1-2°C"
+                                            Text="{Binding Temperature}"
+                                            TextColor="White"
+                                            FontSize="Medium"
+                                            HorizontalOptions="CenterAndExpand"
+                                            VerticalTextAlignment="Center"/>
+                                            <Image
+                                            Source="icon_thermometer.png"
+                                            WidthRequest="30"
+                                            HeightRequest="30"
+                                            FlexLayout.AlignSelf="Center"/>
+                                        </FlexLayout>
+                                        <FlexLayout
+                                        Direction="Row"
+                                        Grid.Column="2"
+                                        JustifyContent="Center">
+                                            <Label
+                                            d:Text="0mm"
+                                            Text="{Binding Rain}"
+                                            TextColor="White"
+                                            FontSize="Medium"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"/>
+                                            <Image
+                                            Source="icon_water.png"
+                                            WidthRequest="30"
+                                            HeightRequest="30"
+                                            FlexLayout.AlignSelf="Center"/>
+                                        </FlexLayout>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Frame>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>

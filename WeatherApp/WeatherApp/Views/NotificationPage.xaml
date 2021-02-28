@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherApp.Views.NotificationPage"
+             xmlns:vm="clr-namespace:WeatherApp.ViewModels"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:resources="clr-namespace:WeatherApp.Resources;assembly=WeatherApp"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False"
+             Appearing="NotificationPage_OnAppearing">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="1,0"
+                             EndPoint="0,1">
+            <GradientStop Color="#03091E"
+                          Offset="0.1"/>
+            <GradientStop Color="#453947"
+                          Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout
+                Padding="20, 0"
+                Spacing="10">
+                <Label
+                    Padding="0,20, 0, 0"
+                    Text="{x:Static resources:AppTranslations.NotificationTitle}"
+                    FontSize="Title"
+                    VerticalOptions="Start" 
+                    TextColor="White"
+                    HorizontalOptions="CenterAndExpand" />
+                <StackLayout
+                    Orientation="Horizontal">
+                    <Label
+                        Text="{x:Static resources:AppTranslations.NotificationSendTime}"
+                        TextColor="White"
+                        FontSize="Title"
+                        HorizontalOptions="StartAndExpand"/>
+                    <TimePicker
+                        Time="{Binding Time}"
+                        HorizontalOptions="End"
+                        TextColor="Orange"
+                        FontSize="Large"
+                        />
+                </StackLayout>
+                <ListView
+                    ItemsSource="{Binding Items}"
+                    GroupDisplayBinding="{Binding PlaceName}"
+                    GroupShortNameBinding="{Binding PlaceName}"
+                    IsGroupingEnabled="true"         
+                    SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout
+                                    Orientation="Horizontal">
+                                    <Label
+                                        TextColor="White"
+                                        FontSize="Large"
+                                        Text="{Binding NotificationName}"
+                                        HorizontalOptions="StartAndExpand"
+                                        VerticalTextAlignment="Center"/>
+                                    <Switch
+                                        IsToggled="{Binding IsEnabled}"
+                                        OnColor="Orange"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Label
+                                    TextColor="White"
+                                    FontSize="Large"
+                                    Text="{Binding PlaceName}"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"/>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                </ListView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

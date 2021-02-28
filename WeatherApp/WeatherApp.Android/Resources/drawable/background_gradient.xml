@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+
+  <gradient
+    android:type="linear"
+    android:startColor="#03091E"
+    android:endColor="#453947"
+    android:angle="270"/>
+</shape>
+
+<!--<LinearGradientBrush StartPoint="1,0"
+                     EndPoint="0,1">
+  <GradientStop Color="#03091E"
+                Offset="0.1"/>
+  <GradientStop Color="#453947"
+                Offset="1.0"/>
+</LinearGradientBrush>-->

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:WeatherApp.Converters;assembly=WeatherApp"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:resources="clr-namespace:WeatherApp.Resources;assembly=WeatherApp"
+             x:Class="WeatherApp.Views.SearchPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="1,0"
+                             EndPoint="0,1">
+            <GradientStop Color="#03091E"
+                          Offset="0.1"/>
+            <GradientStop Color="#453947"
+                          Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <ContentPage.Content>
+        <StackLayout
+            Padding="20, 20"
+            Spacing="10">
+            <StackLayout
+                Orientation="Horizontal"
+                Spacing="10">
+                <Button
+                    BackgroundColor="#505050"
+                    Text="{x:Static resources:AppTranslations.BackButtonText}"
+                    Command="{Binding BackCommand}"
+                    TextColor="White"/>
+                <Entry
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="White"
+                    HorizontalTextAlignment="Center"
+                    Keyboard="Text"
+                    IsSpellCheckEnabled="False"
+                    IsTextPredictionEnabled="False"
+                    x:Name="SearchEntry"
+                    Text="{Binding SearchText}"
+                    ReturnCommand="{Binding SearchCommand}"
+                    ReturnCommandParameter="{Binding Source={x:Reference SearchEntry}, Path=Text}"/>
+            </StackLayout>
+            <ActivityIndicator
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Color="Orange"
+                IsVisible="{Binding IsLoading}"
+                IsRunning="{Binding IsLoading}"/>
+            <ListView
+                IsVisible="{Binding Path=IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                ItemsSource="{Binding Addresses}"
+                SelectedItem="{Binding AddressSelected, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label
+                                FontSize="Large"
+                                LineBreakMode="TailTruncation"
+                                VerticalTextAlignment="Center"
+                                VerticalOptions="Center"
+                                Text="{Binding DisplayName}"
+                                TextColor="White"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

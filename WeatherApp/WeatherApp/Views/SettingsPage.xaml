@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherApp.Views.SettingsPage"
+             xmlns:vm="clr-namespace:WeatherApp.ViewModels"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:resources="clr-namespace:WeatherApp.Resources;assembly=WeatherApp"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False"
+             Appearing="SettingsPage_OnAppearing">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="1,0"
+                             EndPoint="0,1">
+            <GradientStop Color="#03091E"
+                          Offset="0.1"/>
+            <GradientStop Color="#453947"
+                          Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Content>
+
+        <ScrollView>
+            <StackLayout
+                Padding="20, 0"
+                Spacing="10">
+                <Label
+                    Padding="0,20, 0, 0"
+                    Text="{x:Static resources:AppTranslations.SettingsTitle}"
+                    FontSize="Title"
+                    VerticalOptions="Start" 
+                    TextColor="White"
+                    HorizontalOptions="CenterAndExpand" />
+                <Grid
+                    HorizontalOptions="FillAndExpand"
+                    ColumnDefinitions="2*,*"
+                    RowDefinitions="Auto, Auto, Auto">
+                    <Label
+                        Text="{x:Static resources:AppTranslations.SettingsTemperature}"
+                        TextColor="White"
+                        FontSize="Title"
+                        Grid.Row="0"
+                        Grid.Column="0"/>
+                    <Label
+                        d:Text="°C"
+                        Text="{Binding TemperatureType}"
+                        TextColor="Orange"
+                        FontSize="Title"
+                        TextDecorations="Underline"
+                        HorizontalTextAlignment="End"
+                        Grid.Row="0"
+                        Grid.Column="1">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding TemperatureClicked}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label
+                        Text="{x:Static resources:AppTranslations.SettingsWind}"
+                        TextColor="White"
+                        FontSize="Title"
+                        Grid.Row="1"
+                        Grid.Column="0"/>
+                    <Label
+                        d:Text="m/s"
+                        Text="{Binding WindSpeedType}"
+                        TextColor="Orange"
+                        TextDecorations="Underline"
+                        FontSize="Title"
+                        HorizontalTextAlignment="End"
+                        Grid.Row="1"
+                        Grid.Column="1">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding WindSpeedClicked}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
